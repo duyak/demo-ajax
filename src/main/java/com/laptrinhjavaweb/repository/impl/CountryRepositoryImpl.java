@@ -23,7 +23,7 @@ public class CountryRepositoryImpl implements CountryRepository {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            countries = session.createQuery("FROM country").list();
+            countries = session.createQuery("FROM Country").list();
             transaction.commit();
 
         } catch (Exception e) {
@@ -37,5 +37,28 @@ public class CountryRepositoryImpl implements CountryRepository {
 
         }
         return countries;
+    }
+
+    @Override
+    public Country find(Integer id) {
+        Country country = null;
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            country = (Country) session.createQuery("FROM Country " + "WHERE id=:id").setInteger("id", id).uniqueResult();
+            transaction.commit();
+
+        } catch (Exception e) {
+            country = null;
+            if (transaction != null) {
+                transaction.rollback();
+            }
+
+        } finally {
+            session.close();
+
+        }
+        return country;
     }
 }

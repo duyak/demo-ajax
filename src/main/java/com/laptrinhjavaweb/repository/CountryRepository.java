@@ -8,7 +8,9 @@ import java.util.List;
 @Repository
 public interface CountryRepository {
 
-     public List<Country> findAll();
+    public List<Country> findAll();
+
+    public Country find(Integer id);
 
 
 }
